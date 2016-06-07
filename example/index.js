@@ -12,11 +12,11 @@ class Example extends Component {
         </div>
       </header>
 
-      <div id="content">
+      <div className="content">
         <div className="wrapper">
           <h1>Example</h1>
 
-          <div id="content2">
+          <div className="content2">
             <div className="inner">
               <h2>Div example</h2>
               <p>

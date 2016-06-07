@@ -36,7 +36,7 @@ header.top h1 {
     margin: 0;
 }
 
-#content {
+.content {
     padding: 60px 0 40px 0;
 }
 
@@ -53,7 +53,7 @@ body.sublime-scroll-window .wrapper {
     padding: 0;
 }
 
-#content2 {
+.content2 {
     position: relative;
     padding-right: 100px;
     border: 1px solid white;
@@ -62,7 +62,7 @@ body.sublime-scroll-window .wrapper {
     overflow-x: hidden;
 }
 
-#content2 .inner, .sublime-scroll .inner {
+.content2 .inner, .sublime-scroll .inner {
     padding: 0 50px
 }
 
@@ -78,7 +78,7 @@ body.sublime-scroll-window .wrapper {
     z-index: 100000;
 }
 
-.react-minimap .fixed-on-minimap {
+.react-minimap .react-minimap-content > .fixed-on-minimap {
     display: none;
 }
 
@@ -90,7 +90,7 @@ body.sublime-scroll-window .wrapper {
     display: none;
 }
 
-.react-minimap .react-minimap-thumb .react-minimap-content .fixed-on-minimap {
+.react-minimap .react-minimap-thumb .react-minimap-content > .fixed-on-minimap {
     display: block;
 }
 
