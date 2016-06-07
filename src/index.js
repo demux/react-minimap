@@ -82,7 +82,7 @@ class MinimapInner extends Component {
     super(props);
 
     this.onScroll = this.onScroll.bind(this);
-    this.scrollTo = this.scrollTo.bind(this);
+    this.onOverlayClick = this.onOverlayClick.bind(this);
     this.onDragStart = this.onDragStart.bind(this);
     this.onDrag = this.onDrag.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
@@ -104,37 +104,41 @@ class MinimapInner extends Component {
     });
   }
 
-  scrollTo(e) {
-    const {scroll} = this.state;
-    const {windowHeight, scrollHeight, height} = this.props;
+  onOverlayClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
 
-    const overlayElement = ReactDOM.findDOMNode(this.refs.overlay);
+    this._scrollTo(e.clientY - this.minimapTop - this.thumbHeight / 2)
+  }
 
-    const halfThumbHeight = (windowHeight * this.scaleFactor / 2);
-
-    const y = e.clientY - overlayElement.getBoundingClientRect().top - halfThumbHeight;
-
-    this.window.scroll(scroll.left, y / this.scaleFactor);
+  _scrollTo(y) {
+    this.window.scroll(this.state.scroll.left, y / this.scaleFactor);
   }
 
   onDragStart(e) {
     e.preventDefault();
+    e.stopPropagation();
+
+    this._yPosInThumb = e.clientY - this.thumbTop;
 
     window.addEventListener('mousemove', this.onDrag);
     window.addEventListener('mouseup', this.onDragEnd);
-
-    this.onDrag(e);
   }
 
   onDrag(e) {
     e.preventDefault();
+    e.stopPropagation();
+
     const {windowHeight} = this.props;
 
-    this.scrollTo(e);
+    this._scrollTo(e.clientY - this.minimapTop - this._yPosInThumb);
   }
 
   onDragEnd(e) {
     e.preventDefault();
+    e.stopPropagation();
+
+    this._yPosInThumb = null;
 
     window.removeEventListener('mousemove', this.onDrag);
     window.removeEventListener('mouseup', this.onDragEnd);
@@ -149,15 +153,27 @@ class MinimapInner extends Component {
     this.refs.thumbMirror.reflect(this.props.parent.refs.surface);
 
     this.window.addEventListener('scroll', this.onScroll);
-    this.refs.overlay.addEventListener('mousedown', this.scrollTo);
+    this.refs.overlay.addEventListener('mousedown', this.onOverlayClick);
     this.refs.thumb.addEventListener('mousedown', this.onDragStart);
 
   }
 
   componentWillUnmount() {
     this.window.removeEventListener('scroll', this.onScroll);
-    this.refs.overlay.removeEventListener('mousedown', this.scrollTo);
+    this.refs.overlay.removeEventListener('mousedown', this.onOverlayClick);
     this.refs.thumb.removeEventListener('mousedown', this.onDragStart);
+  }
+
+  get minimapTop() {
+    return this.refs.overlay.getBoundingClientRect().top;
+  }
+
+  get thumbTop() {
+    return this.refs.thumb.getBoundingClientRect().top;
+  }
+
+  get thumbHeight() {
+    return this.props.windowHeight * this.scaleFactor;
   }
 
   get scaleFactor() {
