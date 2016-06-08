@@ -10,25 +10,24 @@ React.unstable_renderSubtreeIntoContainer = unstable_renderSubtreeIntoContainer
 class MinimapWrapper extends Component {
   constructor(props) {
     super(props);
+    this.state = {};
 
     this.onResize = this.onResize.bind(this);
   }
 
   get window() {
-    return this.props.window || window;
+    return this.props.contain ? this.props.parent.refs.window : window;
   }
 
   onResize() {
-    this.setState({
-      windowWidth: this.window.innerWidth,
-      windowHeight: this.window.innerHeight
-    });
+    if(!this.props.contain) {
+      this.setState({
+        windowWidth: this.window.innerWidth,
+        windowHeight: this.window.innerHeight
+      });
+    }
 
     this.measure();
-  }
-
-  componentWillMount() {
-    this.onResize();
   }
 
   measure() {
@@ -36,12 +35,20 @@ class MinimapWrapper extends Component {
       const surface = ReactDOM.findDOMNode(this.props.parent.refs.surface);
       const wrapperStyle = getComputedStyle(this.refs.wrapper);
 
-      this.setState({
+      const newState = {
         width: parseInt(wrapperStyle.getPropertyValue('width'), 10),
         height: parseInt(wrapperStyle.getPropertyValue('height'), 10),
         scrollWidth: surface.scrollWidth,
         scrollHeight: surface.scrollHeight
-      });
+      };
+
+      if(this.props.contain) {
+        const _window = ReactDOM.findDOMNode(this.props.parent.refs.window);
+        newState.windowWidth = _window.clientWidth;
+        newState.windowHeight = _window.clientHeight;
+      }
+
+      this.setState(newState);
     }
   }
 
@@ -49,6 +56,7 @@ class MinimapWrapper extends Component {
     this.mounted = true;
     this.window.addEventListener('resize', this.onResize);
 
+    this.onResize();
     this.measure();
   }
 
@@ -193,13 +201,13 @@ class MinimapInner extends Component {
 
       let ch = scrollHeightScaled - windowHeightScaled;
 
-      let max_margin = ch - height;
+      let maxMargin = ch - height;
 
       let factor = y / ch;
 
       let viewportFactor = windowHeightScaled / ch;
 
-      return factor * max_margin + viewportFactor * y;
+      return factor * maxMargin + viewportFactor * y;
     }
     return 0;
   }
@@ -278,17 +286,44 @@ class MinimapInner extends Component {
 
 
 export default class Minimap extends Component {
-  render() {
-    const {children, ...props} = this.props;
+  constructor(props) {
+    super(props);
+    this.state = {
+      mounted: false
+    }
+  }
 
-    return <div>
+  componentDidMount() {
+    if(!!this.props.contain) {
+      this.setState({
+        mounted: true
+      })
+    }
+  }
+
+  render() {
+    let {children, className, contain, ...props} = this.props;
+
+    contain = !!contain;
+
+    const style = contain ? {
+      position: 'relative'
+    } : {};
+
+    if(contain) {
+      className += ' react-minimap-contain'
+    }
+
+    const shouldRenderWrapper = !contain || (contain && this.state.mounted);
+
+    return <div ref="window" {...{style, className}}>
       <Surface ref="surface">
         <div className="react-minimap-content">{children}</div>
       </Surface>
 
-      <MinimapWrapper {...props} parent={this}>
+      {shouldRenderWrapper ? <MinimapWrapper {...{contain, ...props}} parent={this}>
         <MinimapInner parent={this} />
-      </MinimapWrapper>
+      </MinimapWrapper> : null}
     </div>
   }
 }
