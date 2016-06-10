@@ -5,7 +5,7 @@ import Minimap from '../src'
 
 class Example extends Component {
   render() {
-    return <Minimap>
+    return <div>
       <header className="top fixed-on-minimap">
         <div className="wrapper">
           <h1>Sublime Scroll</h1>
@@ -193,7 +193,7 @@ class Example extends Component {
           Created by Arnar Yngvason
         </div>
       </footer>
-    </Minimap>
+    </div>
   }
 }
 
