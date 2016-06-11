@@ -28,21 +28,13 @@ class MinimapWrapper extends Component {
         width: parseInt(wrapperStyle.getPropertyValue('width'), 10),
         height: parseInt(wrapperStyle.getPropertyValue('height'), 10),
         scrollWidth: surface.scrollWidth,
-        scrollHeight: surface.scrollHeight
+        scrollHeight: surface.scrollHeight,
+        windowWidth: this.window.innerWidth,
+        windowHeight: this.window.innerHeight
       };
-
-      if(this.props.contain) {
-        state.windowWidth = this.window.clientWidth;
-        state.windowHeight = this.window.clientHeight;
-      } else {
-        state.windowWidth = this.window.innerWidth;
-        state.windowHeight = this.window.innerHeight;
-      }
 
       state.scaleFactor = state.width / state.windowWidth;
       state.thumbHeight = state.scaleFactor * state.windowHeight;
-
-      console.log(state)
 
       this.setState(state);
     }
@@ -50,7 +42,6 @@ class MinimapWrapper extends Component {
 
   componentDidMount() {
     this.mounted = true;
-    console.log(this.window)
     this.window.addEventListener('resize', this.onResize);
 
     this.onResize();
@@ -62,7 +53,7 @@ class MinimapWrapper extends Component {
   }
 
   render() {
-    const props = {...this.state, window: this.window}
+    const props = {...this.state, window: this.window, document: this.document}
     const {width, height} = this.state;
 
     const wrapperStyle = {
@@ -96,7 +87,7 @@ class MinimapInner extends Component {
     return this.props.window;
   }
 
-  onScroll() {
+  onScroll(e) {
     const win = this.window;
     const doc = document.documentElement;
 
@@ -116,7 +107,6 @@ class MinimapInner extends Component {
   }
 
   _scrollTo(y) {
-    console.log(y);
     this.window.scroll(this.state.scroll.left, y / this.scaleFactor);
   }
 
@@ -225,6 +215,9 @@ class MinimapInner extends Component {
     const {windowHeight, windowWidth} = this.props
 
     return {
+      position: 'absolute',
+      top: 0,
+      left: 0,
       width: windowWidth,
       height: windowHeight,
       transform: `scale3d(${this.scaleFactor}, ${this.scaleFactor}, 1)`,
@@ -282,24 +275,84 @@ class MinimapInner extends Component {
   }
 }
 
+class FakeWindow extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      width: null,
+      height: null
+    };
+  }
+
+  get innerWidth() {
+    return this.state.width;
+  }
+
+  get innerHeight() {
+    return this.state.height;
+  }
+
+  get scrollTop() {
+    return this.refs.window.scrollTop;
+  }
+
+  get scrollLeft() {
+    return this.refs.window.scrollLop;
+  }
+
+  onResize(e) {
+    this.refs.window.dispatchEvent(e);
+  }
+
+  addEventListener(eventName, callback) {
+    this.refs.window.addEventListener(eventName, callback);
+  }
+
+  removeEventListener(eventName, callback) {
+    this.refs.window.removeEventListener(eventName, callback);
+  }
+
+  scroll(x, y) {
+    this.refs.window.scroll(x, y);
+  }
+
+  componentDidMount() {
+    this.refs.window.addEventListener('resize', this.onResize);
+
+    const style = getComputedStyle(this.refs.window);
+
+    this.setState({
+      width: parseInt(style.getPropertyValue('width'), 10),
+      height: parseInt(style.getPropertyValue('height'), 10)
+    });
+  }
+
+  componentWillUnmount() {
+    this.refs.window.removeEventListener('resize', this.onResize);
+  }
+
+  render() {
+    const {className} = this.props;
+
+    return <div style={{position: 'relative'}}>
+      <div ref="window" {...{className}}>{this.props.children}</div>
+    </div>
+  }
+}
+
 
 export default class Minimap extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      mounted: false
-    }
+
+    this.state = {mounted: false};
   }
 
   componentDidMount() {
     if(!!this.props.contain) {
-      this.setState({
-        mounted: true
-      })
+      this.setState({mounted: true});
     }
-
-    console.log('componentDidMount', !!this.props.contain)
-    console.log(ReactDOM.findDOMNode(this.refs.window))
   }
 
   render() {
@@ -307,26 +360,21 @@ export default class Minimap extends Component {
 
     contain = !!contain;
 
-    const style = contain ? {
-      position: 'relative'
-    } : {};
-
     if(contain) {
       className = `react-minimap-contain ${className}`;
     }
 
-    console.log('render', contain)
-
+    // const Element = contain ? React.DOM.iframe : React.DOM.div;
     const shouldRenderWrapper = !contain || (contain && this.state.mounted);
 
-    return <div {...{style, className}}>
+    return <FakeWindow {...{className}} ref="window">
       <Surface ref="surface">
-        <div ref="window" className="react-minimap-content">{children}</div>
+        <div className="react-minimap-content">{children}</div>
       </Surface>
 
       {shouldRenderWrapper ? <MinimapWrapper {...{contain, ...props}} parent={this}>
         <MinimapInner parent={this} />
       </MinimapWrapper> : null}
-    </div>
+    </FakeWindow>
   }
 }

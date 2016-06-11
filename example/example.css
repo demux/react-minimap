@@ -88,26 +88,24 @@ footer.bottom {
   right: 0;
   height: 100%;
   width: 100px;
-  padding: 0;
+  padding-top: 0;
+  padding-bottom: 0;
   z-index: 100;
   box-sizing: border-box;
-}
-
-.react-minimap-contain .react-minimap-content {
-  height: 300px;
-  width: 100%;
-  padding: 0 110px 0 10px;
-  box-sizing: border-box;
-  overflow: scroll;
-  overflow-x: hidden;
 }
 
 .react-minimap-contain .react-minimap-scrollbar .react-minimap-content {
   overflow: visible;
 }
 
-.content2 {
+.react-minimap-contain {
   border: 1px solid white;
   height: 300px;
-  box-sizing: border-box;
+  padding-right: 100px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.react-minimap-contain .react-minimap-content {
+  margin: 0 10px
 }
