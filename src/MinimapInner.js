@@ -135,8 +135,6 @@ export default class MinimapInner extends Component {
   get thumbStyle() {
     const {thumbHeight, thumbWidth, scroll} = this.props
 
-    // console.log(scroll)
-
     const x = scroll.left * this.scaleFactor
     const y = scroll.top * this.scaleFactor - this.yOffset
 
