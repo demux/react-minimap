@@ -13,14 +13,14 @@ export default class Minimap extends Component {
 
     const Window_ = !contain ? Window : MockWindow;
 
-    return <Window_ className={className}>
+    const minimap = <MinimapWrapper {...props}>
+      <MinimapInner parent={this} />
+    </MinimapWrapper>
+
+    return <Window_ minimap={minimap} className={className}>
       <Surface ref="surface">
         <div className="react-minimap-content">{children}</div>
       </Surface>
-
-      <MinimapWrapper {...props}>
-        <MinimapInner parent={this} />
-      </MinimapWrapper>
     </Window_>
   }
 }

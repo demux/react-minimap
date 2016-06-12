@@ -84,16 +84,11 @@ export default class Window extends Component {
   }
 
   render() {
-    const {children, ...props} = this.props;
-    const childProps = {...this.state, window: this.window};
+    const {children, minimap, ...props} = this.props;
 
-    const childrenWithProps = React.Children.map(children, (child) => {
-      if(child.type.name === 'MinimapWrapper') {
-        return React.cloneElement(child, childProps);
-      }
-      return child;
-    });
-
-    return <div {...props}>{childrenWithProps}</div>
+    return <div {...props}>
+      {children}
+      {React.cloneElement(minimap, {...this.state, window: this.window})}
+    </div>
   }
 }

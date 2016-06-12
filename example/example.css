@@ -98,7 +98,7 @@ footer.bottom {
   overflow: visible;
 }
 
-.react-minimap-contain {
+.react-minimap-contain .react-minimap-window {
   border: 1px solid white;
   height: 300px;
   padding-right: 100px;
