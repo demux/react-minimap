@@ -7,10 +7,15 @@ export default class MockWindow extends Component {
 
     this.state = {
       width: null,
-      height: null
+      height: null,
+      scroll: {
+        top: 0,
+        left: 0
+      }
     };
 
     this.onResize = this.onResize.bind(this);
+    this.onScroll = this.onScroll.bind(this);
   }
 
   get innerWidth() {
@@ -26,7 +31,12 @@ export default class MockWindow extends Component {
   }
 
   get scrollLeft() {
-    return this.refs.window.scrollLop;
+    return this.refs.window.scrollLeft;
+  }
+
+  onScroll(e) {
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   onResize(e) {
@@ -43,10 +53,22 @@ export default class MockWindow extends Component {
 
   scroll(x, y) {
     this.refs.window.scroll(x, y);
+
+    this.setState({
+      scroll: {
+        top: y,
+        left: x
+      }
+    })
+  }
+
+  componentDidUpdate() {
+    this.refs.window.scroll(this.state.scroll.left, this.state.scroll.top);
   }
 
   componentDidMount() {
     this.refs.window.addEventListener('resize', this.onResize);
+    this.refs.window.addEventListener('scroll', this.onScroll);
 
     const style = getComputedStyle(this.refs.window);
 
@@ -54,10 +76,13 @@ export default class MockWindow extends Component {
       width: parseInt(style.getPropertyValue('width'), 10),
       height: parseInt(style.getPropertyValue('height'), 10)
     });
+
+    this.refs.window.scroll(this.state.scroll.left, this.state.scroll.top);
   }
 
   componentWillUnmount() {
     this.refs.window.removeEventListener('resize', this.onResize);
+    this.refs.window.removeEventListener('scroll', this.onScroll);
   }
 
   render() {
