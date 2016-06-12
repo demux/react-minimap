@@ -21,7 +21,7 @@ export default class MinimapWrapper extends Component {
 
     // Remeasure if window size or document size has changed:
     const shouldRemeasure = (
-      props.windowWidth !== old.windowWidth ||
+      props.contentWidth !== old.contentWidth ||
       props.windowHeight !== old.windowHeight ||
       props.scrollWidth !== old.scrollWidth ||
       props.scrollHeight !== old.scrollHeight
@@ -33,7 +33,7 @@ export default class MinimapWrapper extends Component {
   }
 
   measure(props) {
-    const {windowWidth, windowHeight, scrollWidth, scrollHeight} = props;
+    const {contentWidth, windowHeight, scrollWidth, scrollHeight} = props;
 
     const wrapperStyle = getComputedStyle(this.refs.wrapper);
 
@@ -43,9 +43,9 @@ export default class MinimapWrapper extends Component {
       height: parseInt(wrapperStyle.getPropertyValue('height'), 10)
     };
 
-    state.scaleFactor = state.width / windowWidth;
+    state.scaleFactor = state.width / contentWidth;
 
-    state.thumbWidth = state.scaleFactor * windowWidth;
+    state.thumbWidth = state.scaleFactor * contentWidth;
     state.thumbHeight = state.scaleFactor * windowHeight;
 
     state.scrollbarWidth = state.scaleFactor * scrollWidth;

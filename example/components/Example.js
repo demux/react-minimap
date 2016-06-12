@@ -2,17 +2,13 @@ import React, {Component} from 'react'
 
 import Minimap from '../../src'
 
+import Wrapper from './Wrapper'
+
 
 export default class Example extends Component {
   render() {
     return <Minimap>
-      <header className="top fixed-on-minimap">
-        <div className="wrapper">
-          <h1>React Minimap</h1>
-        </div>
-      </header>
-
-      <div className="content">
+      <Wrapper>
         <div className="wrapper">
           <h1>Example</h1>
 
@@ -167,13 +163,7 @@ export default class Example extends Component {
           Sed porta euismod velit, vel blandit mi eleifend nec. Nulla id feugiat leo. In venenatis diam vel gravida ornare. Morbi porttitor leo nibh, ut bibendum nisi rhoncus vel. Quisque non pellentesque justo. Curabitur tempor mattis diam ut ullamcorper. Donec suscipit ullamcorper enim, ut vestibulum nibh mollis a. Etiam luctus orci non felis auctor, ut ornare ipsum convallis. Duis nunc orci, hendrerit non elit at, feugiat rutrum urna. Integer dictum leo ut egestas feugiat. Praesent et vestibulum lorem. Fusce euismod ut tortor in commodo.
           </p>
         </div>
-      </div>
-
-      <footer className="bottom fixed-on-minimap">
-        <div className="wrapper">
-          Created by Arnar Yngvason
-        </div>
-      </footer>
+      </Wrapper>
     </Minimap>
   }
 }

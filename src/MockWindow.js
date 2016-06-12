@@ -29,7 +29,7 @@ export default class MockWindow extends Window {
       // Dividing by 0 would cause an error.
   }
 
-  get windowWidth() {
+  get contentWidth() {
     return this.refs && this.refs.window
       ? parseInt(this.style.getPropertyValue('width'), 10)
       : 1;

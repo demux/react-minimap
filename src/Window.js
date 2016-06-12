@@ -10,7 +10,7 @@ export default class Window extends Component {
     super(props);
 
     this.state = {
-      windowWidth: this.windowWidth,
+      contentWidth: this.contentWidth,
       windowHeight: this.windowHeight,
       scrollWidth: this.scrollWidth,
       scrollHeight: this.scrollHeight,
@@ -29,8 +29,8 @@ export default class Window extends Component {
     return this.window.innerHeight;
   }
 
-  get windowWidth() {
-    return this.window.innerWidth;
+  get contentWidth() {
+    return parseInt(getComputedStyle(body).getPropertyValue('width'));
   }
 
   get scrollHeight() {
@@ -64,7 +64,7 @@ export default class Window extends Component {
 
   onResize() {
     this.setState({
-      windowWidth: this.windowWidth,
+      contentWidth: this.contentWidth,
       windowHeight: this.windowHeight,
       scrollWidth: this.scrollWidth,
       scrollHeight: this.scrollHeight

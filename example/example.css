@@ -6,13 +6,11 @@ body {
 }
 
 .wrapper {
-  width: 800px;
+  width: auto;
+  max-width: 800px;
   margin: 0 auto;
+  padding: 0 20px;
 }
-
-// .csstransforms .wrapper {
-//     padding-right: 200px;
-// }
 
 header.top, footer.bottom {
   position: fixed;
@@ -60,7 +58,7 @@ footer.bottom {
   z-index: 100000;
 }
 
-.react-minimap .react-minimap-content > .fixed-on-minimap {
+.react-minimap .react-minimap-content > div > .fixed-on-minimap {
   display: none;
 }
 
@@ -69,11 +67,11 @@ footer.bottom {
   opacity: 0.8;
 }
 
-.react-minimap .react-minimap-thumb .react-minimap-content > :not(.fixed-on-minimap) {
+.react-minimap .react-minimap-thumb .react-minimap-content > div > :not(.fixed-on-minimap) {
   display: none;
 }
 
-.react-minimap .react-minimap-thumb .react-minimap-content > .fixed-on-minimap {
+.react-minimap .react-minimap-thumb .react-minimap-content > div > .fixed-on-minimap {
   display: block;
 }
 

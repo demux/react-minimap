@@ -118,13 +118,13 @@ export default class MinimapInner extends Component {
   }
 
   get mirrorStyle() {
-    const {windowHeight, windowWidth} = this.props
+    const {windowHeight, contentWidth} = this.props
 
     return {
       position: 'absolute',
       top: 0,
       left: 0,
-      width: windowWidth,
+      width: contentWidth,
       height: windowHeight,
       transform: `scale3d(${this.scaleFactor}, ${this.scaleFactor}, 1)`,
       transformOrigin: '0 0',
