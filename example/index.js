@@ -16,7 +16,7 @@ class Example extends Component {
         <div className="wrapper">
           <h1>Example</h1>
 
-          <Minimap contain className="content2">
+          <Minimap contain>
             <h2>Div example</h2>
             <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla consectetur dictum lorem, ut vulputate nisl ornare ac. Proin ac nibh at leo viverra ullamcorper id a magna. Donec gravida porta nulla id molestie. Sed facilisis dolor nec cursus malesuada. Quisque pharetra lectus eu erat laoreet cursus. In nec risus ut enim ultrices facilisis sed nec augue. Sed ullamcorper purus sit amet turpis mollis, id interdum purus commodo. Fusce posuere, erat vitae laoreet molestie, justo nisl fermentum odio, id feugiat ipsum tellus pellentesque sapien. Fusce rutrum orci aliquam, molestie ante a, ultricies ligula. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed orci ipsum, ultrices vel vulputate id, rutrum at arcu. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus volutpat semper felis sit amet venenatis. Vivamus cursus sapien quis ornare convallis.
