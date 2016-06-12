@@ -10,8 +10,8 @@ export default class Window extends Component {
     super(props);
 
     this.state = {
-      windowWidth: window.innerWidth,
-      windowHeight: window.innerHeight,
+      windowWidth: this.windowWidth,
+      windowHeight: this.windowHeight,
       scrollWidth: this.scrollWidth,
       scrollHeight: this.scrollHeight,
       scroll: this.scroll
@@ -19,6 +19,18 @@ export default class Window extends Component {
 
     this.onResize = this.onResize.bind(this);
     this.onScroll = this.onScroll.bind(this);
+  }
+
+  get window() {
+    return window;
+  }
+
+  get windowHeight() {
+    return this.window.innerHeight;
+  }
+
+  get windowWidth() {
+    return this.window.innerWidth;
   }
 
   get scrollHeight() {
@@ -37,13 +49,13 @@ export default class Window extends Component {
 
   get scroll() {
     return {
-      top: window.scrollTop || window.pageYOffset || html.scrollTop,
-      left: window.scrollLeft || window.pageXOffset || html.scrollLeft
+      top: this.window.scrollTop || this.window.pageYOffset || html.scrollTop,
+      left: this.window.scrollLeft || this.window.pageXOffset || html.scrollLeft
     }
   }
 
   scroll(x, y) {
-    window.scroll(x, y);
+    this.window.scroll(x, y);
   }
 
   onScroll() {
@@ -52,8 +64,8 @@ export default class Window extends Component {
 
   onResize() {
     this.setState({
-      windowWidth: window.innerWidth,
-      windowHeight: window.innerHeight,
+      windowWidth: this.windowWidth,
+      windowHeight: this.windowHeight,
       scrollWidth: this.scrollWidth,
       scrollHeight: this.scrollHeight
     });
@@ -63,17 +75,17 @@ export default class Window extends Component {
     this.onResize();
 
     window.addEventListener('resize', this.onResize);
-    window.addEventListener('scroll', this.onScroll);
+    this.window.addEventListener('scroll', this.onScroll);
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResize);
-    window.removeEventListener('scroll', this.onScroll);
+    this.window.removeEventListener('scroll', this.onScroll);
   }
 
   render() {
     const {children, ...props} = this.props;
-    const childProps = {...this.state, window};
+    const childProps = {...this.state, window: this.window};
 
     const childrenWithProps = React.Children.map(children, (child) => {
       if(child.type.name === 'MinimapWrapper') {
