@@ -2,6 +2,9 @@ body {
   background: #272822;
   color: #F8F8F2;
   font-family: Helvetica, Arial, sans-serif;
+}
+
+body.has-minimap {
   padding-right: 200px;
 }
 
@@ -15,11 +18,15 @@ body {
 header.top, footer.bottom {
   position: fixed;
   box-sizing: border-box;
-  padding-right: 200px;
   left: 0;
   width: 100%;
   background-color: #171814;
   z-index: 10000;
+}
+
+body.has-minimap header.top,
+body.has-minimap footer.bottom {
+  padding-right: 200px;
 }
 
 header.top {
@@ -58,20 +65,21 @@ footer.bottom {
   z-index: 100000;
 }
 
-.react-minimap .react-minimap-content > div > .fixed-on-minimap {
+.react-minimap .react-minimap-content .fixed-on-minimap {
   display: none;
 }
 
-.react-minimap-thumb {
+.react-minimap .react-minimap-thumb {
   background-color: rgba(255, 255, 255, 0.1);
   opacity: 0.8;
 }
 
-.react-minimap .react-minimap-thumb .react-minimap-content > div > :not(.fixed-on-minimap) {
+.react-minimap .react-minimap-thumb .react-minimap-content .main > :not(.fixed-on-minimap),
+.react-minimap-contain .react-minimap .react-minimap-thumb .react-minimap-content > :not(.fixed-on-minimap) {
   display: none;
 }
 
-.react-minimap .react-minimap-thumb .react-minimap-content > div > .fixed-on-minimap {
+.react-minimap .react-minimap-thumb .react-minimap-content .fixed-on-minimap {
   display: block;
 }
 

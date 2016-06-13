@@ -46,6 +46,9 @@ export default class MockWindow extends Window {
     // Dividing by 0 would cause an error.
   }
 
+  mountHook() {}
+  unmountHook() {}
+
   render() {
     const {mounted} = this.state;
     const {children, minimap, className, ...props} = this.props;

@@ -76,11 +76,23 @@ export default class Window extends Component {
 
     window.addEventListener('resize', this.onResize);
     this.window.addEventListener('scroll', this.onScroll);
+
+    this.mountHook();
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResize);
     this.window.removeEventListener('scroll', this.onScroll);
+
+    this.unmountHook();
+  }
+
+  mountHook() {
+    body.className += body.className.split(' ').concat('has-minimap').join('');
+  }
+
+  unmountHook() {
+    body.className = body.className.replace('has-minimap', '');
   }
 
   render() {

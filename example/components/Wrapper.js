@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 
 export default class Wrapper extends Component {
   render() {
-    return <div>
+    return <div className="main">
       <header className="top fixed-on-minimap">
         <div className="wrapper">
           <h1>React Minimap</h1>
