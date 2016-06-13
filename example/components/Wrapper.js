@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 
+import {Link} from 'react-router'
+
 
 export default class Wrapper extends Component {
   render() {
@@ -7,6 +9,14 @@ export default class Wrapper extends Component {
       <header className="top fixed-on-minimap">
         <div className="wrapper">
           <h1>React Minimap</h1>
+
+          <nav>
+            <ul>
+              <li><Link to="/nested">Nested</Link></li>
+              <li><Link to="/contained">Contained</Link></li>
+              <li><Link to="/">Full Window</Link></li>
+            </ul>
+          </nav>
         </div>
       </header>
 

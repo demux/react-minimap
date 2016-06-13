@@ -4,6 +4,14 @@ body {
   font-family: Helvetica, Arial, sans-serif;
 }
 
+a,
+a:visited,
+a:active {
+  outline: 0;
+  color: #66d9ef;
+  text-decoration: none;
+}
+
 body.has-minimap {
   padding-right: 200px;
 }
@@ -15,7 +23,8 @@ body.has-minimap {
   padding: 0 20px;
 }
 
-header.top, footer.bottom {
+header.top,
+footer.bottom {
   position: fixed;
   box-sizing: border-box;
   left: 0;
@@ -24,21 +33,108 @@ header.top, footer.bottom {
   z-index: 10000;
 }
 
-body.has-minimap header.top,
-body.has-minimap footer.bottom {
-  padding-right: 200px;
-}
-
 header.top {
   top: 0;
   height: 60px;
   border-bottom: 1px solid #131410;
-  box-shadow: inset 0 -10px 10px -10px #000, inset 0 -1px 0 #0b0c0a, 0 1px 0 #3c3d39, 0 5px 5px #272822;
+  box-shadow: inset 0 -10px 10px -10px #000, inset 0 -1px 0px #0b0c0a, 0 1px 0px #3c3d39, 0 5px 5px #272822;
+  white-space: nowrap;
 }
 
 header.top h1 {
+  display: inline;
+  font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  height: 60px;
   line-height: 60px;
+}
+header.top h1 a,
+header.top h1 a:visited,
+header.top h1 a:active {
+  color: #f8f8f2;
+}
+header.top h1 .comment {
+  font-size: 16px;
+  padding-left: 12px;
+  vertical-align: middle;
+  font-weight: 400;
+  font-style: italic;
+}
+header.top nav {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+body.has-minimap header.top nav {
+  right: 200px;
+}
+
+header.top nav ul {
+  display: block;
+  margin: 0 -12px 0 0;
+  padding: 0;
+}
+header.top nav ul li {
+  position: relative;
+  display: block;
+  float: right;
   margin: 0;
+  padding: 0;
+}
+header.top nav ul li a,
+header.top nav ul li a:visited,
+header.top nav ul li a:active {
+  display: block;
+  font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  color: #f8f8f2;
+  font-size: 20px;
+  height: 60px;
+  line-height: 60px;
+  padding: 0 12px;
+}
+header.top nav ul li a:hover,
+header.top nav ul li a:visited:hover,
+header.top nav ul li a:active:hover {
+  color: #e6db74;
+}
+header.top nav ul li.active a {
+  color: #e6db74;
+}
+header.top nav ul li.active::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border: 13px solid transparent;
+  border-bottom-color: #272822;
+  position: absolute;
+  left: 50%;
+  bottom: -1px;
+  margin-left: -13px;
+  z-index: 20;
+}
+header.top nav ul li.active::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border: 14px solid transparent;
+  border-bottom-color: #3c3d39;
+  position: absolute;
+  left: 50%;
+  bottom: -1px;
+  margin-left: -14px;
+  z-index: 10;
+}
+
+header.top .wrapper nav {
+  right: 180px;
+}
+
+body.has-minimap header.top,
+body.has-minimap footer.bottom {
+  padding-right: 200px;
 }
 
 .content {
@@ -47,10 +143,10 @@ header.top h1 {
 
 footer.bottom {
   bottom: 0;
-  height: 40px;
-  line-height: 40px;
+  height: 39px;
+  line-height: 39px;
   border-top: 1px solid #131410;
-  box-shadow: inset 0 10px 10px -10px #000, inset 0 1px 0 #0b0c0a, 0 -1px 0 #3c3d39, 0 -5px 5px #272822;
+  box-shadow: inset 0 10px 10px -10px #000, inset 0 -1px 0 #0b0c0a, 0 -1px 0 #3c3d39, 0 -5px 5px #272822;
 }
 
 .react-minimap {
