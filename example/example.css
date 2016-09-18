@@ -211,3 +211,7 @@ footer.bottom {
 .react-minimap-contain .react-minimap-content {
   margin: 0 10px
 }
+
+.react-minimap-contain .react-minimap-thumb {
+  background-color: rgba(0, 255, 0, 0.2);
+}
