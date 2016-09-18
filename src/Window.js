@@ -4,21 +4,25 @@ import React, {Component} from 'react'
 const body = document.body;
 const html = document.documentElement;
 
+function stateMapper(obj) {
+  return {
+    contentWidth: obj.contentWidth,
+    windowHeight: obj.windowHeight,
+    scrollWidth: obj.scrollWidth,
+    scrollHeight: obj.scrollHeight
+  }
+}
 
 export default class Window extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      contentWidth: this.contentWidth,
-      windowHeight: this.windowHeight,
-      scrollWidth: this.scrollWidth,
-      scrollHeight: this.scrollHeight,
-      scroll: this.scroll
-    };
+    this.state = stateMapper(this);
 
     this.onResize = this.onResize.bind(this);
     this.onScroll = this.onScroll.bind(this);
+
+    this._scrollCallback = () => {}
   }
 
   get window() {
@@ -47,6 +51,10 @@ export default class Window extends Component {
     );
   }
 
+  onScroll() {
+    this._scrollCallback(this.scroll)
+  }
+
   get scroll() {
     return {
       top: this.window.scrollTop || this.window.pageYOffset || html.scrollTop,
@@ -54,37 +62,38 @@ export default class Window extends Component {
     }
   }
 
-  scroll(x, y) {
-    this.window.scroll(x, y);
+  set scroll({left, top}) {
+    this.window.scroll(left, top);
   }
 
-  onScroll() {
-    this.setState({scroll: this.scroll});
+  setScrollCallback(fn) {
+    this._scrollCallback = fn
   }
 
   onResize() {
-    this.setState({
-      contentWidth: this.contentWidth,
-      windowHeight: this.windowHeight,
-      scrollWidth: this.scrollWidth,
-      scrollHeight: this.scrollHeight
-    });
+    this.setState(stateMapper(this));
   }
 
   componentDidMount() {
     this.onResize();
-
     window.addEventListener('resize', this.onResize);
     this.window.addEventListener('scroll', this.onScroll);
-
     this.mountHook();
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResize);
     this.window.removeEventListener('scroll', this.onScroll);
-
     this.unmountHook();
+  }
+
+  componentDidUpdate() {
+    const oldState = stateMapper(this.state)
+    const newState = stateMapper(this)
+
+    if(JSON.stringify(oldState) !== JSON.stringify(newState)) {
+      this.setState(newState)
+    }
   }
 
   mountHook() {
@@ -100,7 +109,7 @@ export default class Window extends Component {
 
     return <div {...props}>
       {children}
-      {React.cloneElement(minimap, {...this.state, window: this.window})}
+      {React.cloneElement(minimap, {...this.state, window: this})}
     </div>
   }
 }

@@ -1,21 +1,26 @@
 import React, {Component} from 'react'
-import {Mirror} from 'react-mirror'
-
-
-// Monkey patch for react-mirror
-import {unstable_renderSubtreeIntoContainer} from 'react-dom'
-React.unstable_renderSubtreeIntoContainer = unstable_renderSubtreeIntoContainer
 
 
 export default class MinimapInner extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+
+    this.state = {
+      scroll: this.props.window.scroll
+    }
 
     this.onOverlayClick = this.onOverlayClick.bind(this);
     this.onDragStart = this.onDragStart.bind(this);
     this.onDrag = this.onDrag.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
+
+    this.onScroll = this.onScroll.bind(this)
+
+    props.window.setScrollCallback(this.onScroll)
+  }
+
+  onScroll(scroll) {
+    this.setState({scroll})
   }
 
   onOverlayClick(e) {
@@ -26,7 +31,10 @@ export default class MinimapInner extends Component {
   }
 
   _scrollTo(y) {
-    this.props.window.scroll(this.props.scroll.left, y / this.scaleFactor);
+    this.props.window.scroll = {
+      left: this.state.scroll.left,
+      top: y ? y / this.scaleFactor : 0
+    }
   }
 
   onDragStart(e) {
@@ -58,16 +66,20 @@ export default class MinimapInner extends Component {
     window.removeEventListener('mouseup', this.onDragEnd);
   }
 
+  componentWillReceiveProps(props) {
+    props.window.setScrollCallback(this.onScroll)
+  }
+
   componentDidMount() {
-    this.refs.mirror.reflect(this.props.parent.refs.surface);
-    this.refs.thumbMirror.reflect(this.props.parent.refs.surface);
+    // this.props.window.window.addEventListener('scroll', this.onScroll);
 
     this.refs.overlay.addEventListener('mousedown', this.onOverlayClick);
     this.refs.thumb.addEventListener('mousedown', this.onDragStart);
-
   }
 
   componentWillUnmount() {
+    // this.props.window.window.removeEventListener('scroll', this.onScroll);
+
     this.refs.overlay.removeEventListener('mousedown', this.onOverlayClick);
     this.refs.thumb.removeEventListener('mousedown', this.onDragStart);
   }
@@ -85,7 +97,8 @@ export default class MinimapInner extends Component {
   }
 
   get yOffset() {
-    const {height, scrollbarHeight, thumbHeight, scroll} = this.props;
+    const {height, scrollbarHeight, thumbHeight} = this.props;
+    const {scroll} = this.state
 
     if(scrollbarHeight > height) {
       let y = scroll.top * this.scaleFactor;
@@ -133,7 +146,8 @@ export default class MinimapInner extends Component {
   }
 
   get thumbStyle() {
-    const {thumbHeight, thumbWidth, scroll} = this.props
+    const {thumbHeight, thumbWidth} = this.props
+    const {scroll} = this.state
 
     const x = scroll.left * this.scaleFactor
     const y = scroll.top * this.scaleFactor - this.yOffset
@@ -160,19 +174,21 @@ export default class MinimapInner extends Component {
   }
 
   render() {
+    const {content} = this.props
+
+    const mirror = <div className="react-minimap-content">
+      <div style={this.mirrorStyle}>{content}</div>
+    </div>
+
     return <div>
       <div className="react-minimap-scrollbar" style={this.scrollbarStyle}>
-        <div style={this.mirrorStyle}>
-          <Mirror ref="mirror" />
-        </div>
+        {mirror}
 
         <div ref="overlay" style={this.overlayStyle} />
       </div>
 
       <div ref="thumb" className="react-minimap-thumb" style={this.thumbStyle}>
-        <div style={this.mirrorStyle}>
-          <Mirror ref="thumbMirror" />
-        </div>
+        {mirror}
       </div>
     </div>
   }

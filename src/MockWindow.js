@@ -60,7 +60,7 @@ export default class MockWindow extends Window {
         {children}
       </div>
 
-      {mounted ? React.cloneElement(minimap, {...this.state, window: this.window}) : null}
+      {mounted ? React.cloneElement(minimap, {...this.state, window: this}) : null}
     </div>
   }
 }

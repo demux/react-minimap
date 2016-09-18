@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import Surface from 'react-mirror'
 
 import Window from './Window'
 import MockWindow from './MockWindow'
@@ -14,13 +13,11 @@ export default class Minimap extends Component {
     const Window_ = !contain ? Window : MockWindow;
 
     const minimap = <MinimapWrapper {...props}>
-      <MinimapInner parent={this} />
+      <MinimapInner content={children} />
     </MinimapWrapper>
 
     return <Window_ minimap={minimap} className={className}>
-      <Surface ref="surface">
-        <div className="react-minimap-content">{children}</div>
-      </Surface>
+      {children}
     </Window_>
   }
 }

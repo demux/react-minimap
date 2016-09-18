@@ -20,8 +20,7 @@
   "homepage": "https://github.com/demux/react-minimap#readme",
   "dependencies": {
     "react": "^15.1.0",
-    "react-dom": "^15.1.0",
-    "react-mirror": "git://github.com/Theadd/react-mirror.git"
+    "react-dom": "^15.1.0"
   },
   "devDependencies": {
     "babel": "^6.5.2",
