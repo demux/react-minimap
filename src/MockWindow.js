@@ -56,8 +56,10 @@ export default class MockWindow extends Window {
     const windowClassName = `react-minimap-contain ${className}`;
 
     return <div style={{position: 'relative'}} className={windowClassName}>
-      <div ref="window" {...props} className="react-minimap-window">
-        {children}
+      <div className="react-minimap-window-wrapper">
+        <div ref="window" {...props} className="react-minimap-window">
+          {children}
+        </div>
       </div>
 
       {mounted ? React.cloneElement(minimap, {...this.state, window: this}) : null}
