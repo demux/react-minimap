@@ -186,14 +186,14 @@ footer.bottom {
 
 .react-minimap-contain .react-minimap {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 0px;
+  right: 0px;
   height: 100%;
   width: 100px;
-  padding-top: 0;
-  padding-bottom: 0;
+  padding: 1px 1px 1px 0;
   z-index: 100;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .react-minimap-contain .react-minimap-scrollbar .react-minimap-content {
@@ -212,7 +212,7 @@ footer.bottom {
   height: 100%;
   overflow: hidden;
   overflow-y: scroll;
-  padding-right: 200px
+  padding-right: 200px;
 }
 
 .react-minimap-contain .react-minimap-content {
